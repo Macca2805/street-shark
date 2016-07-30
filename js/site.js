@@ -12,9 +12,9 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		$scope.genders = ["Male", "Female"];
 
 		// defaults
-		$scope.zoom = 14;
-		$scope.latitude = -33.881086;
-		$scope.longitude = 151.2120779;
+		$scope.zoom = 18;
+		$scope.latitude = -33.8764694;
+		$scope.longitude = 151.204879;
 		$scope.radius = 0;
 		$scope.gender = "Male";
 		$scope.hour = 0;
@@ -37,11 +37,13 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		dataset.fetch("heatmap").then(function (data) {
 			$scope.heatmapRawData = data;
 			mapPoints();
+			updateMap();
 		});
 
 		$scope.pokemonRawData = [];		
-		getPokemon.fetch($scope.latitude, $scope.longitude, $scope.zoom).then(function (data) {
+		getPokemon.fetch($scope.latitude, $scope.longitude, $scope.zoom - 1).then(function (data) {
 			$scope.pokemonRawData = data;
+			showPokemon();
 		});
 
 		// map init
@@ -55,14 +57,14 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			map: $scope.map,
 			radius: $scope.radius,
 			gradient: [
-	          "rgba(0, 255, 0, 0.5)",
-	          "rgba(127, 255, 0, 1)",
-	          "rgba(255, 255, 0, 1)",
-	          "rgba(255, 127, 0, 1)",
-	          "rgba(255, 0, 0, 1)",
-	          "rgba(127, 0, 0, 1)",
-	          "rgba(0, 0, 0, 1)"
-	        ]
+			"rgba(0, 255, 0, 0.5)",
+			"rgba(127, 255, 0, 1)",
+			"rgba(255, 255, 0, 1)",
+			"rgba(255, 127, 0, 1)",
+			"rgba(255, 0, 0, 1)",
+			"rgba(127, 0, 0, 1)",
+			"rgba(0, 0, 0, 1)"
+			]
 		});
 
 		$scope.map.addListener("zoom_changed", function () {
@@ -105,6 +107,26 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			$scope.heatmapLayer.set("radius", Math.floor($scope.radius));
 		}
 
+		function showPokemon() {
+
+			var markers = [];
+			angular.forEach($scope.pokemonRawData.data, function (value, key) {
+
+				var image = {
+					url: "https://df48mbt4ll5mz.cloudfront.net/images/pokemon/" + value.pokemonId + ".png",
+					scaledSize: new google.maps.Size(64, 64),
+					origin: new google.maps.Point(0, 0),
+					anchor: new google.maps.Point(0, 32)
+				};
+
+				markers.push(new google.maps.Marker({
+					position: {lat: value.latitude, lng: value.longitude},
+					map: $scope.map,
+					icon: image
+				}));
+			});
+		}
+
 		function runFilter(value, current, base, multiplier) {
 
 			return value * (1 + ((current - base) * multiplier))
@@ -114,9 +136,9 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 
 			var current;
 			angular.forEach($scope.weatherRawData, function (value, key) {
-
 				if(value && value.hour == $scope.hour) current = value;
 			});
+
 			$scope.temp = current.temp || 0;
 			$scope.raining = current.rain === "Y" ? "Yes" : "No";
 		}
@@ -136,7 +158,9 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			return time.split(":")[0];
 		}
 
-		$interval(function () {
+		$interval(updateMap, 5000);
+
+		function updateMap() {
 
 			$scope.hour++;
 			if($scope.hour > 23) $scope.hour = 0;
@@ -144,7 +168,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			updateFatalities();
 			mapPoints();
 			setHeatmapRadius();
-		}, 1000);
+		}
 	}]);
 
 app.factory("dataset", function ($timeout, $http) {
