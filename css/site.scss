@@ -1,0 +1,43 @@
+/* Colors */
+
+$pc-100: 10%;
+$pc-300: 20%;
+$pc-500: 30%;
+$pc-700: 40%;
+$pc-900: 50%;
+
+$black: #000;
+$white: #fff;
+
+$background: #223843;
+
+$greys: ();
+$tones: $pc-100, $pc-300, $pc-500, $pc-700, $pc-900;
+
+@each $t in $tones {
+    $ti: index($tones, $t);
+    $greys: append($greys, #{lighten($black, $t)});
+}
+
+$color-1: #e74c3c;
+$color-2: #F86624;
+
+$colors: $color-1, $color-2;
+
+$timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+
+/* Fonts */
+
+$font-body: "Montserrat", sans-serif;
+$font-heading: "Montserrat", sans-serif;
+
+/* Layout */
+
+body {
+    background: $background;
+    font-family: $font-body;
+}
+
+p {
+    color: #e74c3c;
+}
