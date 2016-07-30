@@ -11,16 +11,18 @@
     <script type="text/javascript" src="//cdn.rawgit.com/icons8/bower-webicon/v0.10.7/angular-webicon.min.js"></script>
     <script type="text/javascript" src="js/site.js"></script>
 
+    <!-- Google Maps API Key AIzaSyC1FZa4wqh5Go6jdzhiBSjPx5z_hherECU -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1FZa4wqh5Go6jdzhiBSjPx5z_hherECU&libraries=visualization"></script>
+
     <!-- Fonts -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Montserrat:400,700">
-
 
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/site.css" />
 </head>
 
 <body ng-controller="MainController">
-    <div ng-include="templateUrl" class="template-container"></div>
+    <div id="map" class="map"></div>
 </body>
 
 </html>

@@ -1,0 +1,1 @@
+node-sass "css/site.scss" "css/site.css"
