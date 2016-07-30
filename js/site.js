@@ -41,7 +41,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		});
 
 		$scope.pokemonRawData = [];		
-		getPokemon.fetch($scope.latitude, $scope.longitude, $scope.zoom - 1).then(function (data) {
+		getPokemon.fetch($scope.latitude, $scope.longitude, $scope.zoom).then(function (data) {
 			$scope.pokemonRawData = data;
 			showPokemon();
 		});
