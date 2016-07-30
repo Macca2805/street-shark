@@ -23,6 +23,14 @@
 
 <body ng-controller="MainController">
     <div id="map" class="map"></div>
+    <div class="info">
+        <div>
+            Time: <span ng-bind="hour"></span>:00
+        </div>
+        <div>
+            Temperature: <span ng-bind="temp"></span>
+        </div>
+    </div>
 </body>
 
 </html>
