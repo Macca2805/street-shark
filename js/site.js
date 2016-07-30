@@ -6,7 +6,7 @@ app.controller("MainController", ["$scope", "heatmap",
 	function ($scope, heatmap) {
 
 		$scope.map = new google.maps.Map(document.getElementById('map'), {
-			center: {lat: -31.9307918, lng: 115.8581252},
+			center: {lat: -33.8833237, lng: 151.2071924},
 			zoom: 17
 		});
 
