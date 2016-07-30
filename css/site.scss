@@ -28,8 +28,8 @@ $timing-function: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 
 /* Fonts */
 
-$font-body: "Montserrat", sans-serif;
-$font-heading: "Montserrat", sans-serif;
+$font-body: "Roboto", sans-serif;
+$font-heading: "Roboto", sans-serif;
 
 /* Layout */
 
@@ -38,6 +38,7 @@ body {
     font-family: $font-body;
     padding: 0;
     margin: 0;
+    font-size: 14px;
 }
 
 p {
@@ -58,6 +59,23 @@ p {
     padding: 15px;
     right: 15px;
     top: 15px;
+    width: 12.5%;
     border-radius: 2px;
-    box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19), 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px
+}
+
+.drop-down {
+    margin-bottom: 5px;
+}
+
+.drop-down select {
+    font-family: $font-body;
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 100%;
+    border: none;
 }
