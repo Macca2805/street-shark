@@ -2,13 +2,13 @@
 var app = angular.module("streetSharkApp", []);
 
 /* main controller */
-app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval",
-	function ($scope, dataset, getPokemon, $interval) {
+app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
+	function ($scope, dataset, getPokemon, $timeout) {
 
 		// constants
 		$scope.baseTemp = 25;
 		$scope.baseFatalities = 85;
-		$scope.baseAgeMultiplier = 60;
+		$scope.baseAgeMultiplier = 80;
 		$scope.baseMutliplier = 0.005;
 		$scope.hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
 		$scope.genders = ["Male", "Female"];
@@ -154,7 +154,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			$scope.radius = runFilter($scope.radius, $scope.fatalities, $scope.baseFatalities, $scope.baseMutliplier);
 
 			// age filter
-			$scope.radius = runFilter($scope.radius, $scope.ageMultiplier, $scope.baseAgeMultiplier, $scope.baseMutliplier);
+			$scope.radius = $scope.radius * ($scope.ageMultiplier / $scope.baseAgeMultiplier);
 
 			// gender global filter
 			$scope.radius = $scope.gender === "Male" ? $scope.radius * (1 - $scope.baseMutliplier) : $scope.radius;
@@ -201,6 +201,8 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 				if(value && value.hour == $scope.hour) current = value;
 			});
 
+			if(!current) return;
+
 			$scope.temp = current.temp || 0;
 			$scope.raining = current.rain === "Y" ? "Yes" : "No";
 		}
@@ -212,6 +214,9 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 
 				if(value && value.hour == $scope.hour) current = value;
 			});
+
+			if(!current) return;
+
 			$scope.fatalities = current.fatalities || 0;
 		}
 
@@ -224,8 +229,13 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 					current = value;
 				}
 			});
+
+			if(!current) return;
+
 			$scope.ageMultiplier = Math.floor(current.multiplier * 100);
 		}
+
+		$timeout(function () { updateMap() }, 5000);
 	}]);
 
 app.factory("dataset", function ($timeout, $http) {
