@@ -191,7 +191,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 
 				var image = {
 					url: "https://df48mbt4ll5mz.cloudfront.net/images/pokemon/" + value.pokemonId + ".png",
-					scaledSize: new google.maps.Size(32, 32),
+					scaledSize: new google.maps.Size(48, 48),
 					origin: new google.maps.Point(0, 0),
 					anchor: new google.maps.Point(0, 32)
 				};
