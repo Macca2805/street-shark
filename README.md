@@ -9,3 +9,7 @@ Street Shark knits together publicly available crime data with a various predict
 ![Map](https://i.imgur.com/VANdviO.png "Map")
 
 Street Shark highlights dangerous areas of your city in red, based on your gender and age and the time of day. When the user enters a destination, the Street Shark navigates a path to avoid dangerous zones automatically. Through-out the day the application is updated with the latest crime prediction and routes are recalculated automatically. 
+
+![Pokemans](https://i.imgur.com/TkoxJxE.png "Pokemans")
+
+Street Shark can also overlay Pokemon Radar data from pokemonradar.io.
