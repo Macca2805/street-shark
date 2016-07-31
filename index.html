@@ -25,9 +25,25 @@
     <div id="map" class="map"></div>
     <div class="info">
         <div class="drop-down">
+            <select ng-model="hour">
+                <option ng-repeat="option in hours" value="{{option}}">{{option}}</option>
+            </select>
+        </div>
+        <div class="drop-down">
             <select ng-model="gender">
                 <option ng-repeat="option in genders" value="{{option}}">{{option}}</option>
             </select>
+        </div>
+        <div class="drop-down">
+            <select ng-model="age">
+                <option ng-repeat="option in ageGroups" value="{{option}}">{{option}}</option>
+            </select>
+        </div>
+        <div class="check-box">
+            <label>
+                Show Pokemon?
+                <input type="checkbox" ng-model="pokemonShow" />
+            </label>
         </div>
         <table>
             <tr>
@@ -41,10 +57,6 @@
             <tr>
                 <td>Raining?</td>
                 <td ng-bind="raining"></td>
-            </tr>
-            <tr>
-                <td>Avg Fatalities:</td>
-                <td ng-bind="fatalities"></td>
             </tr>
         </table>
     </div>
