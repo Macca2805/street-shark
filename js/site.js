@@ -16,8 +16,8 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 
 		// defaults
 		$scope.zoom = 16;
-		$scope.latitude = -33.8764694;
-		$scope.longitude = 151.204879;
+		$scope.latitude = -33.8771694;
+		$scope.longitude = 151.2165295;
 		$scope.radius = 0;
 		$scope.gender = "Male";
 		$scope.age = "20-29";
@@ -63,12 +63,15 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 			zoom: $scope.zoom
 		});
 
+		$scope.directionsService = new google.maps.DirectionsService();
+		$scope.directionsRenderer = new google.maps.DirectionsRenderer();
+
 		$scope.heatmapLayer = new google.maps.visualization.HeatmapLayer({
 			data: [],
 			map: $scope.map,
 			radius: $scope.radius,
 			gradient: [
-			"rgba(0, 255, 0, 0.5)",
+			"rgba(0, 255, 0, 0.2)",
 			"rgba(127, 255, 0, 1)",
 			"rgba(255, 255, 0, 1)",
 			"rgba(255, 127, 0, 1)",
@@ -106,6 +109,25 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 			updateAgeMultiplier();
 			mapPoints();
 			setHeatmapRadius();
+		}
+
+		function buildRoute() {
+
+			var request = {
+				origin: "Kings Cross Station, Sydney",
+				destination: "Elizabeth House, 230 Elizabeth St, Surry Hills NSW 2010, Australia",
+				travelMode: "WALKING",
+				provideRouteAlternatives: true,
+			};
+
+			$scope.directionsRenderer.setMap($scope.map);
+
+			$scope.directionsService.route(request, function(result, status) {
+
+				if (status === "OK") {
+					$scope.directionsRenderer.setDirections(result);
+				}
+			});
 		}
 
 		function mapPoints() {
@@ -169,7 +191,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 
 				var image = {
 					url: "https://df48mbt4ll5mz.cloudfront.net/images/pokemon/" + value.pokemonId + ".png",
-					scaledSize: new google.maps.Size(64, 64),
+					scaledSize: new google.maps.Size(32, 32),
 					origin: new google.maps.Point(0, 0),
 					anchor: new google.maps.Point(0, 32)
 				};
@@ -235,7 +257,10 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$timeout",
 			$scope.ageMultiplier = Math.floor(current.multiplier * 100);
 		}
 
-		$timeout(function () { updateMap() }, 5000);
+		$timeout(function () {
+			updateMap();
+			buildRoute();
+		}, 2500);
 	}]);
 
 app.factory("dataset", function ($timeout, $http) {
