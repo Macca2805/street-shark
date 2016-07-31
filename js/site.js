@@ -8,11 +8,11 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		// constants
 		$scope.baseTemp = 25;
 		$scope.baseFatalities = 85;
-		$scope.baseAgeMultiplier = 40;
+		$scope.baseAgeMultiplier = 60;
 		$scope.baseMutliplier = 0.005;
 		$scope.hours = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
 		$scope.genders = ["Male", "Female"];
-		$scope.ageGroups = ["20-29", "30-39", "40-49", "50+"];
+		$scope.ageGroups = ["20-29", "30-39", "40-49", "50-59", "60-69", "70-79"];
 
 		// defaults
 		$scope.zoom = 16;
@@ -48,8 +48,6 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		$scope.heatmapRawData = [];
 		dataset.fetch("heatmap").then(function (data) {
 			$scope.heatmapRawData = data;
-			mapPoints();
-			updateMap();
 		});
 
 		$scope.pokemonRawData = [];		
@@ -86,20 +84,11 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			setHeatmapRadius();
 		});
 
-		$scope.$watch('gender', function(newValue, oldValue){
+		$scope.$watch('gender', function () { updateMap() });
 
-			updateMap();
-		});
+		$scope.$watch('age', function () { updateMap() });
 
-		$scope.$watch('age', function(newValue, oldValue){
-
-			updateMap();
-		});
-
-		$scope.$watch('hour', function(newValue, oldValue){
-
-			updateMap();
-		});
+		$scope.$watch('hour', function () { updateMap() });
 
 		$scope.$watch('pokemonShow', function(newValue, oldValue){
 
@@ -156,7 +145,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 		function setHeatmapRadius() {
 
 			// zoom filter
-			$scope.radius = (6.875 * Math.pow($scope.zoom, 2)) - (170.09 * $scope.zoom) + 1035;
+			$scope.radius = (6.875 * Math.pow($scope.zoom, 2)) - (170.09 * $scope.zoom) + 1056.6;
 
 			// weather filter
 			$scope.radius = runFilter($scope.radius, $scope.temp, $scope.baseTemp, $scope.baseMutliplier);
@@ -165,7 +154,7 @@ app.controller("MainController", ["$scope", "dataset", "getPokemon", "$interval"
 			$scope.radius = runFilter($scope.radius, $scope.fatalities, $scope.baseFatalities, $scope.baseMutliplier);
 
 			// age filter
-			$scope.radius = $scope.radius * ($scope.ageMultiplier / $scope.baseAgeMultiplier);
+			$scope.radius = runFilter($scope.radius, $scope.ageMultiplier, $scope.baseAgeMultiplier, $scope.baseMutliplier);
 
 			// gender global filter
 			$scope.radius = $scope.gender === "Male" ? $scope.radius * (1 - $scope.baseMutliplier) : $scope.radius;
